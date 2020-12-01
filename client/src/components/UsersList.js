@@ -51,7 +51,7 @@ class UsersList extends Component {
             {this.state.users.map((currentUser, index) => {
               return (
                 <tr key={currentUser._id}>
-                  <td>{index}</td>
+                  <td>{index + 1}</td>
                   <td>{currentUser.firstName}</td>
                   <td>{currentUser.lastName}</td>
                   <td>{currentUser.age}</td>

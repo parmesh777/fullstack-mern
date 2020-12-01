@@ -6,9 +6,13 @@ export default class CreateUser extends Component {
   state = {
     firstName: "",
     lastName: "",
-    age: 0,
+    age: "",
     gender: "",
     error: "",
+    fName: "",
+    lName: "",
+    aError: "",
+    gError: "",
     visible: true,
     users: [],
   };
@@ -23,14 +27,38 @@ export default class CreateUser extends Component {
     });
   }
 
-  validate = () => {
-    let error = "";
+  // validate = () => {
+  //   let error = "";
 
-    if (!this.state.firstName || !this.state.lastName || !this.state.age) {
-      error = "can't be Blank";
+  //   if (!this.state.firstName || !this.state.lastName || !this.state.age) {
+  //     error = "can't be Blank";
+  //   }
+  //   if (error) {
+  //     this.setState({ error });
+  //     return false;
+  //   }
+  //   return true;
+  // };
+
+  validate = () => {
+    let fName = "";
+    let lName = "";
+    let aError = "";
+    let gError = "";
+    if (!this.state.firstName) {
+      fName = "can't be blank";
     }
-    if (error) {
-      this.setState({ error });
+    if (!this.state.lastName) {
+      lName = "can't be blank";
+    }
+    if (!this.state.age) {
+      aError = "can't be blank";
+    }
+    if (!this.state.gender) {
+      gError = "can't be blank";
+    }
+    if (fName || lName || aError || gError) {
+      this.setState({ fName, lName, aError, gError });
       return false;
     }
     return true;
@@ -68,6 +96,10 @@ export default class CreateUser extends Component {
         lastName: "",
         age: 0,
         gender: "",
+        fName: "",
+        lName: "",
+        aError: "",
+        gError: "",
       });
     }
   };
@@ -104,7 +136,7 @@ export default class CreateUser extends Component {
                 onChange={this.onChange}
               />
               <div style={{ fontSize: 14, color: "red" }}>
-                {this.state.error}
+                {this.state.fName}
               </div>
             </div>
 
@@ -120,7 +152,7 @@ export default class CreateUser extends Component {
                 onChange={this.onChange}
               />
               <div style={{ fontSize: 14, color: "red" }}>
-                {this.state.error}
+                {this.state.lName}
               </div>
             </div>
 
@@ -135,7 +167,7 @@ export default class CreateUser extends Component {
                 onChange={this.onChange}
               />
               <div style={{ fontSize: 14, color: "red" }}>
-                {this.state.error}
+                {this.state.aError}
               </div>
             </div>
 
@@ -162,7 +194,7 @@ export default class CreateUser extends Component {
                 Female
               </label>
               <div style={{ fontSize: 14, color: "red" }}>
-                {this.state.error}
+                {this.state.gError}
               </div>
             </div>
 
