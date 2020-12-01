@@ -8,7 +8,6 @@ export default class CreateUser extends Component {
     lastName: "",
     age: "",
     gender: "",
-
     fName: "",
     lName: "",
     aError: "",

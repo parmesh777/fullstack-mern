@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "../App.css";
+//import UserList from "./UsersList";
+import { Link } from "react-router-dom";
 
 class EditUser extends Component {
   state = {
@@ -8,10 +10,33 @@ class EditUser extends Component {
     lastName: "",
     age: 0,
     gender: "",
-    users: [],
-  };
 
+    users: [],
+    persons: [],
+  };
+  // getUsers() {
+  //   axios
+  //     .get("/api/users")
+  //     .then((res) => {
+  //       this.setState({ users: res.data });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+
+  // componentDidMount() {
+  //   this.getUsers();
+  // }
   componentDidMount() {
+    axios
+      .get("/api/users")
+      .then((res) => {
+        this.setState({ persons: res.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     axios
       .get("/api/users/edit/" + this.props.match.params.id)
       .then((res) => {
@@ -67,11 +92,22 @@ class EditUser extends Component {
       gender: "",
     });
   };
+  deleteUser = (id) => {
+    axios.delete("/api/users/" + id).then((res) => console.log(res.data));
+
+    this.setState({
+      persons: this.state.persons.filter((el) => el._id !== id),
+    });
+  };
 
   render() {
     return (
       <div className="container">
-        <h2>Edit User Details</h2>
+        <div className="container" style={{ textAlign: "center" }}>
+          <h2>Edit User Details</h2>
+          <button className="btn btn-primary">Add Details</button>
+        </div>
+
         <br />
         <br />
         <form onSubmit={this.handleSubmit} className="contain">
@@ -141,6 +177,50 @@ class EditUser extends Component {
             <input type="submit" value="EditUser" className="btn btn-primary" />
           </div>
         </form>
+
+        <table className="table table-striped">
+          <thead className="tableHover">
+            <tr>
+              <th>Sr no.</th>
+              <th>Firstname</th>
+              <th>Lastname</th>
+              <th>Age</th>
+              <th>Gender</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {this.state.persons.map((currentUser, index) => {
+              return (
+                <tr key={currentUser._id}>
+                  <td>{index + 1}</td>
+                  <td>{currentUser.firstName}</td>
+                  <td>{currentUser.lastName}</td>
+                  <td>{currentUser.age}</td>
+                  <td>{currentUser.gender}</td>
+                  <td>
+                    <Link
+                      to={"/edit/" + currentUser._id}
+                      className="btn btn-info"
+                    >
+                      Edit
+                    </Link>
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => this.deleteUser(currentUser._id)}
+                      className="btn btn-danger"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     );
   }
