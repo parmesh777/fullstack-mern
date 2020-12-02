@@ -12,6 +12,7 @@ export default class CreateUser extends Component {
     lName: "",
     aError: "",
     gError: "",
+    fnError: "",
     visible: true,
     users: [],
   };
@@ -44,6 +45,7 @@ export default class CreateUser extends Component {
     let lName = "";
     let aError = "";
     let gError = "";
+
     if (!this.state.firstName) {
       fName = "can't be blank";
     }
@@ -63,6 +65,27 @@ export default class CreateUser extends Component {
     return true;
   };
   onChange = (e) => {
+    if (e.target.name === "firstName") {
+      if (!this.state.firstName.length > 0) {
+        this.setState({ fName: "" });
+      }
+    }
+    if (e.target.name === "lastName") {
+      if (!this.state.lastName.length > 0) {
+        this.setState({ lName: "" });
+      }
+    }
+    if (e.target.name === "age") {
+      if (!this.state.age.length > 0) {
+        this.setState({ aError: "" });
+      }
+    }
+    if (e.target.name === "gender") {
+      if (!this.state.gender.length > 0) {
+        this.setState({ gError: "" });
+      }
+    }
+
     this.setState({
       [e.target.name]: e.target.value,
     });

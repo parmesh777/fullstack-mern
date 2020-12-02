@@ -3,6 +3,8 @@ import axios from "axios";
 import "../App.css";
 //import UserList from "./UsersList";
 import { Link } from "react-router-dom";
+import { Button, Modal } from "react-bootstrap";
+// import { Modal, ModalHeader, ModalBody, ModalFooter } from "bootstrap";
 
 class EditUser extends Component {
   state = {
@@ -10,6 +12,7 @@ class EditUser extends Component {
     lastName: "",
     age: 0,
     gender: "",
+    show: false,
 
     users: [],
     persons: [],
