@@ -35,7 +35,7 @@ class UsersList extends Component {
     return (
       <div>
         <UserForm />
-        <table className="table table-striped">
+        <table className="table table-striped container">
           <thead className="tableHover">
             <tr>
               <th>Sr no.</th>
