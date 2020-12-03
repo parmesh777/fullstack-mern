@@ -70,7 +70,8 @@ class EditUser extends Component {
         console.log(error);
       });
     axios
-      .get("/api/users/edit/" + this.props.match.params.id)
+      //.get("/api/users/edit/" + this.props.match.params.id)
+      .get("/api/users/" + this.props.match.params.id)
       .then((res) => {
         this.setState({
           firstName: res.data.firstName,
@@ -135,7 +136,8 @@ class EditUser extends Component {
     const isValid = this.validate();
     if (isValid) {
       axios
-        .put("/api/users/edit/" + this.props.match.params.id, userData, config)
+        //.put("/api/users/edit/" + this.props.match.params.id, userData, config)
+        .put("/api/users/" + this.props.match.params.id, userData, config)
         .then((res) => console.log(res.data));
       window.location = "/";
       console.log(this.state);

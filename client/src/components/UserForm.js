@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "../App.css";
+import { InputGroup, FormControl } from "react-bootstrap";
 
 export default class CreateUser extends Component {
   state = {
@@ -143,6 +144,19 @@ export default class CreateUser extends Component {
           </button>
         </div>
         <br />
+        <br />
+        <InputGroup className="mb-3">
+          <InputGroup.Prepend>
+            <InputGroup.Text id="inputGroup-sizing-default">
+              Persons List
+            </InputGroup.Text>
+          </InputGroup.Prepend>
+          <FormControl
+            placeholder="search persons.."
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
+          />
+        </InputGroup>
         <br />
         {this.state.visible ? null : (
           <form onSubmit={this.handleSubmit} className="contain">

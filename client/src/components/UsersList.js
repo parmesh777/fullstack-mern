@@ -7,6 +7,12 @@ import "../App.css";
 class UsersList extends Component {
   state = {
     users: [],
+    direction: {
+      firstName: "asc",
+      lastName: "asc",
+      age: "asc",
+      gender: "asc",
+    },
   };
 
   getUsers() {
@@ -31,6 +37,32 @@ class UsersList extends Component {
     });
   };
 
+  sortUser = (name) => {
+    const users = this.state.users;
+    this.setState({
+      users: users.sort((a, b) =>
+        this.state.direction[name] === "asc"
+          ? a[name].toString().localeCompare(b[name].toString())
+          : b[name].toString().localeCompare(a[name].toString())
+      ),
+      direction: {
+        [name]: this.state.direction[name] === "asc" ? "desc" : "asc",
+      },
+    });
+  };
+  ageUser = (name) => {
+    const users = this.state.users;
+    this.setState({
+      users: users.sort((a, b) =>
+        this.state.direction[name] === "asc"
+          ? parseFloat(a[name]) - parseFloat(b[name])
+          : parseFloat(b[name]) - parseFloat(a[name])
+      ),
+      direction: {
+        [name]: this.state.direction[name] === "asc" ? "desc" : "asc",
+      },
+    });
+  };
   render() {
     return (
       <div>
@@ -39,10 +71,10 @@ class UsersList extends Component {
           <thead className="tableHover">
             <tr>
               <th>Sr no.</th>
-              <th>Firstname</th>
-              <th>Lastname</th>
-              <th>Age</th>
-              <th>Gender</th>
+              <th onClick={() => this.sortUser("firstName")}>Firstname</th>
+              <th onClick={() => this.sortUser("lastName")}>Lastname</th>
+              <th onClick={() => this.ageUser("age")}>Age</th>
+              <th onClick={() => this.sortUser("gender")}>Gender</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>
@@ -58,7 +90,8 @@ class UsersList extends Component {
                   <td>{currentUser.gender}</td>
                   <td>
                     <Link
-                      to={"/edit/" + currentUser._id}
+                      //to={"/edit/" + currentUser._id}
+                      to={"/" + currentUser._id}
                       className="btn btn-info"
                     >
                       Edit

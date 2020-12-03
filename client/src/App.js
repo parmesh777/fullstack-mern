@@ -9,7 +9,8 @@ function App() {
   return (
     <Router>
       <Route path="/" exact component={UsersList} />
-      <Route path="/edit/:id" component={EditUser} />
+      {/* <Route path="/edit/:id" component={EditUser} /> */}
+      <Route path="/:id" component={EditUser} />
     </Router>
   );
 }

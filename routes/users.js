@@ -9,7 +9,8 @@ router.get("/", (req, res) => {
     .catch((err) => res.status(400).json("Error:" + err));
 });
 
-router.get("/edit/:id", (req, res) => {
+//router.get("/edit/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   user
     .findById(req.params.id)
     .then((data) => res.json(data))
@@ -35,7 +36,8 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/edit/:id", async (req, res) => {
+//router.put("/edit/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   const { firstName, lastName, age, gender } = req.body;
 
   const contactFields = {};
