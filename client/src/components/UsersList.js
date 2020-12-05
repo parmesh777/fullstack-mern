@@ -3,17 +3,31 @@ import axios from "axios";
 import UserForm from "./UserForm";
 import { Link } from "react-router-dom";
 import "../App.css";
+import { InputGroup, FormControl } from "react-bootstrap";
 
 class UsersList extends Component {
   state = {
     users: [],
+    persons: [],
     direction: {
       firstName: "asc",
       lastName: "asc",
       age: "asc",
       gender: "asc",
     },
+    search: "",
   };
+
+  filterUsers() {
+    axios
+      .get("/api/users")
+      .then((res) => {
+        this.setState({ persons: res.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   getUsers() {
     axios
@@ -28,6 +42,7 @@ class UsersList extends Component {
 
   componentDidMount() {
     this.getUsers();
+    this.filterUsers();
   }
   deleteUser = (id) => {
     axios.delete("/api/users/" + id).then((res) => console.log(res.data));
@@ -63,10 +78,39 @@ class UsersList extends Component {
       },
     });
   };
+  searchC = (e) => {
+    this.setState({
+      search: e.target.value,
+    });
+  };
+
   render() {
+    //console.log(this.state.users);
+    const items = this.state.users.filter((user) => {
+      return user.firstName
+        .toLowerCase()
+        .includes(this.state.search.toLowerCase());
+    });
     return (
       <div>
         <UserForm />
+
+        <InputGroup className="mb-3">
+          <InputGroup.Prepend>
+            <InputGroup.Text id="inputGroup-sizing-default">
+              Persons List
+            </InputGroup.Text>
+          </InputGroup.Prepend>
+          <FormControl
+            name="search"
+            onChange={this.searchC}
+            value={this.state.search}
+            placeholder="search persons.."
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
+          />
+        </InputGroup>
+        <br />
         <table className="table table-striped container">
           <thead className="tableHover">
             <tr>
@@ -80,10 +124,11 @@ class UsersList extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.users.map((currentUser, index) => {
+            {items.map((currentUser, index) => {
               return (
                 <tr key={currentUser._id}>
                   <td>{index + 1}</td>
+
                   <td>{currentUser.firstName}</td>
                   <td>{currentUser.lastName}</td>
                   <td>{currentUser.age}</td>
