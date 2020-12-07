@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
 import UserForm from "./UserForm";
+import Page from "./Page";
 import { Link } from "react-router-dom";
 import "../App.css";
-import { InputGroup, FormControl } from "react-bootstrap";
+
+import { InputGroup, FormControl, Button } from "react-bootstrap";
 
 class UsersList extends Component {
   state = {
@@ -16,6 +18,9 @@ class UsersList extends Component {
       gender: "asc",
     },
     search: "",
+
+    current: 1,
+    perPage: 5,
   };
 
   filterUsers() {
@@ -83,14 +88,42 @@ class UsersList extends Component {
       search: e.target.value,
     });
   };
+  // onPaginationChange = (start, end) => {
+  //   const { pagination } = this.state;
+  //   this.setState({
+  //     start: start,
+  //     end: end,
+  //   });
+  // };
+  prevPage = () => {
+    if (this.state.current > 1) {
+      this.setState({
+        current: this.state.current - 1,
+      });
+    }
+  };
 
   render() {
-    //console.log(this.state.users);
     const items = this.state.users.filter((user) => {
       return user.firstName
         .toLowerCase()
         .includes(this.state.search.toLowerCase());
     });
+
+    const { current, perPage } = this.state;
+    const indexOfLastTodo = current * perPage;
+    const indexOfFirstTodo = indexOfLastTodo - perPage;
+    const currentUsers = items.slice(indexOfFirstTodo, indexOfLastTodo);
+    const totalPages = items.length / perPage;
+
+    const nextPage = () => {
+      if (this.state.current < Math.ceil(totalPages)) {
+        this.setState({
+          current: this.state.current + 1,
+        });
+      }
+    };
+
     return (
       <div>
         <UserForm />
@@ -124,7 +157,7 @@ class UsersList extends Component {
             </tr>
           </thead>
           <tbody>
-            {items.map((currentUser, index) => {
+            {currentUsers.map((currentUser, index) => {
               return (
                 <tr key={currentUser._id}>
                   <td>{index + 1}</td>
@@ -155,6 +188,22 @@ class UsersList extends Component {
             })}
           </tbody>
         </table>
+        <div className="d-flex justify-content-between container">
+          <Button
+            variant="outline-primary"
+            disabled={current === 1 ? true : false}
+            onClick={this.prevPage}
+          >
+            Prev
+          </Button>
+          <Button
+            variant="outline-success"
+            disabled={current === totalPages ? true : false}
+            onClick={nextPage}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     );
   }
