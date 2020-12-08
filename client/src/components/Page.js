@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
+import React from "react";
 
-const Page = ({ pagination, onPaginationChange }) => {
-  const [counter, setCounter] = useState(1);
-
-  useEffect(() => {
-    const value = pagination.end * counter;
-    // console.log("start", value - pagination.end);
-    // console.log("end", value);
-    onPaginationChange(value - pagination.end, value);
-  }, [counter]);
+const Page = ({ perPage, total, paginate }) => {
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(total / perPage); i++) {
+    pageNumbers.push(i);
+  }
 
   return (
-    <div className="d-flex justify-content-between container">
-      <Button variant="outline-primary" onClick={() => setCounter(counter - 1)}>
-        Prev
-      </Button>
-      <Button variant="outline-success" onClick={() => setCounter(counter + 1)}>
-        Next
-      </Button>
-    </div>
+    <nav aria-label="Page navigation example">
+      <ul className="pagination pagination-lg">
+        {pageNumbers.map((number) => (
+          <li className="page-item " key={number}>
+            <a className="page-link " onClick={() => paginate(number)} href="#">
+              {number}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };
+
 export default Page;

@@ -88,13 +88,14 @@ class UsersList extends Component {
       search: e.target.value,
     });
   };
-  // onPaginationChange = (start, end) => {
-  //   const { pagination } = this.state;
-  //   this.setState({
-  //     start: start,
-  //     end: end,
-  //   });
-  // };
+
+  firstPage = () => {
+    if (this.state.current > 1) {
+      this.setState({
+        current: 1,
+      });
+    }
+  };
   prevPage = () => {
     if (this.state.current > 1) {
       this.setState({
@@ -124,11 +125,24 @@ class UsersList extends Component {
       }
     };
 
+    const lastPage = () => {
+      if (this.state.current < Math.ceil(totalPages)) {
+        this.setState({
+          current: Math.ceil(totalPages),
+        });
+      }
+    };
+    const paginate = (pageNumber) => {
+      this.setState({
+        current: pageNumber,
+      });
+    };
+
     return (
       <div>
         <UserForm />
 
-        <InputGroup className="mb-3">
+        <InputGroup className="mb-3 container">
           <InputGroup.Prepend>
             <InputGroup.Text id="inputGroup-sizing-default">
               Persons List
@@ -188,20 +202,37 @@ class UsersList extends Component {
             })}
           </tbody>
         </table>
-        <div className="d-flex justify-content-between container">
+        <div className="d-flex justify-content-center container">
           <Button
-            variant="outline-primary"
+            variant="link"
+            disabled={current === 1 ? true : false}
+            onClick={this.firstPage}
+          >
+            First
+          </Button>
+          <Button
+            variant="link"
             disabled={current === 1 ? true : false}
             onClick={this.prevPage}
           >
             Prev
           </Button>
+
+          <Page perPage={perPage} total={items.length} paginate={paginate} />
+
           <Button
-            variant="outline-success"
+            variant="link"
             disabled={current === totalPages ? true : false}
             onClick={nextPage}
           >
             Next
+          </Button>
+          <Button
+            variant="link"
+            disabled={current === totalPages ? true : false}
+            onClick={lastPage}
+          >
+            Last
           </Button>
         </div>
       </div>
